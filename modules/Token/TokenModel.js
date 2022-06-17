@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { db } from "../../db.js";
-import { UserModel } from "../User/UserModel.js";
+import { UserModel } from "../user/userModel.js";
 
 export const TokenModel = db.define('Token', {
   refreshToken: {
@@ -10,5 +10,6 @@ export const TokenModel = db.define('Token', {
 });
 
 TokenModel.belongsTo(UserModel, {
-  foreignKey: 'userId'
+  foreignKey: 'userId',
+  allowNull: false
 })

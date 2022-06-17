@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { TokenModel } from "./TokenModel.js";
+import { TokenModel } from "./tokenModel.js";
 
 class TokenService {
   async generate(payload) {
@@ -8,16 +8,17 @@ class TokenService {
       refreshToken: jwt.sign(payload, process.env.JWT_REFRESH_TOKEN, { expiresIn: '1d' }),
     }
   }
+
   async save(userId, refreshToken) {
-    const token = await TokenModel.findOne({ where: { userId } })
+    const tokenData = await TokenModel.findOne({ where: { userId } })
 
-    if (token) {
-      token.refreshToken = refreshToken
+    if (tokenData) {
+      tokenData.refreshToken = refreshToken
 
-      return await token.save();
+      return await tokenData.save();
     }
 
-    await TokenModel.create({ userId, refreshToken });
+    const token = await TokenModel.create({ userId, refreshToken });
 
     return token;
   }

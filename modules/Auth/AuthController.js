@@ -1,17 +1,33 @@
-import jwt from "jsonwebtoken";
-import { userService } from "../User/UserService.js";
-import { TokenModel } from "./TokenModel.js";
+import { authService } from "./authService.js";
 
-class TokenService {
-  async login(email, password) {
-    const user = userService.getByEmail({ email })
-    if(!user){
-      throw new Error('Не такого пользователя, не пизди!')
+class AuthController {
+  async login(req, res, next) {
+    try {
+      const user = await authService.login(req.body.email, req.body.password)
+
+      res.cookie('refreshToken', user.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+      })
+
+      return res.json(user)
+    } catch (error) {
+      next(error);
     }
   }
-  async logout() {
-  }
-};
 
-const tokenService = new TokenService();
-export { tokenService }
+  async logout(req, res) {
+    try {
+      const { refreshToken } = req.cookies;
+      await authService.logout(refreshToken)
+      res.clearCookie('refreshToken');
+
+      return res.json({ message: `Ты вышел` })
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+const authController = new AuthController();
+export { authController }

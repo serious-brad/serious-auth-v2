@@ -1,8 +1,13 @@
 import { Router } from "express";
-import { userController } from "./UserController.js";
+import { body } from "express-validator";
+import { userController } from "./userController.js";
 
 const userRouter = Router();
-userRouter.route('/user').post(userController.create)
+userRouter.route('/user').post(
+  body('email').isEmail().withMessage("Неправильно ввели почту"),
+  body('password').isLength({ min: 5 }).withMessage("Пароль должен быть не меньше 5 символов"),
+  userController.create
+)
 userRouter.route('/users').get(userController.getAll)
 
 export { userRouter }
