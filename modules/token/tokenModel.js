@@ -1,15 +1,15 @@
 import { DataTypes } from "sequelize";
 import { db } from "../../db.js";
-import { UserModel } from "../user/userModel.js";
+import { userModel } from "../user/userModel.js";
 
-export const TokenModel = db.define('Token', {
+export const tokenModel = db.define('Token', {
   refreshToken: {
     type: DataTypes.STRING,
     allowNull: false
   }
 });
 
-TokenModel.belongsTo(UserModel, {
+tokenModel.belongsTo(userModel, {
   foreignKey: 'userId',
   allowNull: false
 })

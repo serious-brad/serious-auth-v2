@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import { db } from "./db.js";
 import { userRouter } from "./modules/user/userRouter.js";
 import { authRouter } from "./modules/auth/authRouter.js";
-import { errorMiddleware } from "./modules/Errors/errorMiddleware.js";
+import { errorMiddleware } from "./modules/error/errorMiddleware.js";
 
 config()
 const app = express();

@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { db } from "../../db.js";
 
-export const UserModel = db.define('User', {
+export const userModel = db.define('User', {
   email: {
     type: DataTypes.STRING,
     allowNull: false

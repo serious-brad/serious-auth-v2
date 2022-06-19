@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { ErrorException } from "../Errors/errorException.js";
+import { ErrorException } from "../error/errorException.js";
 import { userService } from "./userService.js";
 
 class UserController {
@@ -10,6 +10,7 @@ class UserController {
       if (!validationErrors.isEmpty()) {
         throw ErrorException.BadRequest("Ошибка валидации", validationErrors.array());
       }
+
       const { email, password } = req.body;
       const user = await userService.create(email, password);
 
@@ -29,7 +30,7 @@ class UserController {
       const users = await userService.getAll();
       return res.json(users);
     } catch (error) {
-      console.log('%cUserController.js line:25 error', 'color: #007acc;', error);
+      next(error)
     }
   }
 }
